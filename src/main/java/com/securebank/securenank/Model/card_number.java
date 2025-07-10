@@ -2,7 +2,7 @@ package com.securebank.securenank.Model;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 public class card_number {
