@@ -1,6 +1,7 @@
 package com.securebank.securenank.Mapper;
 
 import com.securebank.securenank.DTO.app_userDTO;
+import com.securebank.securenank.DTO.app_user_view;
 import com.securebank.securenank.Model.app_user;
 import com.securebank.securenank.Model.role;
 import com.securebank.securenank.Repository.RepositoryRole;
@@ -29,5 +30,14 @@ public class MapperAppUser {
             return new app_user(userDTO.id_user, userDTO.username, userDTO.email, role.get(),userDTO.password);
         }
         return new app_user();
+    }
+
+    public app_user_view convertToView(app_user user){
+        app_user_view userDTO = new app_user_view();
+        userDTO.id_user = user.getId_user();
+        userDTO.username  = user.getUsername();
+        userDTO.email = user.getEmail();
+        userDTO.role = user.getRole().getId_role();
+        return userDTO;
     }
 }
