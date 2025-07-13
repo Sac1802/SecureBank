@@ -6,14 +6,11 @@ import com.securebank.securenank.Model.app_user;
 import com.securebank.securenank.Service.ServiceAppUser;
 import com.securebank.securenank.Utils.JsonResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/user")
