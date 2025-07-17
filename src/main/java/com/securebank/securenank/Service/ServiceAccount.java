@@ -31,4 +31,13 @@ public class ServiceAccount {
         Optional<account> accountFind = repositoryAccount.findById(id);
         return accountFind.orElse(null);
     }
+
+    public String deleteAccount(int id){
+        Optional<account> findAccount = repositoryAccount.findById(id);
+        if (findAccount.isPresent()) {
+            repositoryAccount.deleteById(id);
+            return "Delete account";
+        }
+        return null;
+    }
 }

@@ -37,4 +37,11 @@ public class AccountController {
                 JsonResponse.sendJsonErrorServerNotFound("The account with that id does not match any other.");
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable int id){
+        String response = serviceAccount.deleteAccount(id);
+        return response != null ? JsonResponse.sendJsonErrorServerNotFound(response) :
+                JsonResponse.sendJsonErrorServerNotFound("The account with that id does not match any other.");
+    }
+
 }
