@@ -34,7 +34,7 @@ public class JsonResponse {
 
     public static ResponseEntity<?> sendJsonErrorServerNotFound(String message){
         JsonDto jsonDto = new JsonDto(StatusMessage.CLIENT_ERROR, message);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(404).body(jsonDto);
     }
 
     public static ResponseEntity<?> sendJsonErrorServerInternalServerError(String message){

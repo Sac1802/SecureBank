@@ -19,7 +19,7 @@ public class AppUserController {
     private ServiceAppUser serviceAppUser;
 
 
-    @PostMapping("/save")
+    @PostMapping("/")
     public ResponseEntity<?> saveUser(@RequestBody app_userDTO user){
         app_user userSave = serviceAppUser.save(user);
         return userSave != null
@@ -27,7 +27,7 @@ public class AppUserController {
                 JsonResponse.sendJsonErrorClientBadRequest("Role with id { " + user.role + "} not found");
     }
 
-    @GetMapping("/get")
+    @GetMapping("/")
     public ResponseEntity<?> getUsers(){
         List<app_user_view> listUsers = serviceAppUser.findAll();
         return listUsers != null ?
@@ -35,14 +35,14 @@ public class AppUserController {
                 JsonResponse.sendJsonErrorServerNotFound(new ArrayList<app_user_view>().toString());
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable int id){
         app_user_view user = serviceAppUser.findByIdUser(id);
         return user != null ? JsonResponse.sendJsonGenericDto(user) :
                 JsonResponse.sendJsonErrorServerNotFound("User with id { " + id + "} not found");
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateUserTotal(@PathVariable int id, @RequestBody app_user_view user){
         if(user == null || user.id_user == 0 || user.username.trim().isEmpty() || user.email.trim().isEmpty()
                 || user.role == 0){
@@ -53,13 +53,13 @@ public class AppUserController {
                 JsonResponse.sendJsonErrorServerNotFound("The user with that id was not found.");
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable int id){
         String delete = serviceAppUser.delete(id);
         return JsonResponse.sendJsonErrorServerNotFound(delete);
     }
 
-    @PatchMapping("/update/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody Map<String, Object> updates){
         try{
             app_user updateUser = serviceAppUser.partialUpdate(id, updates);
