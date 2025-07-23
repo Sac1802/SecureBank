@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/account")
@@ -21,22 +22,19 @@ public class AccountController {
     @PostMapping("/")
     public ResponseEntity<?> saveAccount(@RequestBody accountDTO accountDTO){
         account accountSaved = serviceAccount.saveAccountService(accountDTO);
-        return accountSaved != null ? JsonResponse.sendJsonSuccessResponse("Account registered successfully") :
-                JsonResponse.sendJsonErrorServerForbidden("The account could not be saved");
+        return JsonResponse.sendJsonGenericDto(accountSaved);
     }
 
     @GetMapping("/")
     public ResponseEntity<?> getAll(){
-        List<account> listAccount = serviceAccount.getAllAccount();
-        return !listAccount.isEmpty() ?  JsonResponse.sendJsonGenericObjectList(listAccount) :
-                JsonResponse.sendJsonGenericObjectList(new ArrayList<account>());
+        List<accountDTO> listAccount = serviceAccount.getAllAccount();
+        return JsonResponse.sendJsonGenericObjectList(listAccount);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?>  getById(@PathVariable int id){
-        account accountFindById = serviceAccount.findById(id);
-        return accountFindById != null ? JsonResponse.sendJsonGenericDto(accountFindById):
-                JsonResponse.sendJsonErrorServerNotFound("The account with that id does not match any other.");
+        accountDTO accountFindById = serviceAccount.findById(id);
+        return JsonResponse.sendJsonGenericDto(accountFindById);
     }
 
     @PutMapping("/{id}")
@@ -49,13 +47,13 @@ public class AccountController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable int id){
         String response = serviceAccount.deleteAccount(id);
-        return response != null ? JsonResponse.sendJsonErrorServerNotFound(response) :
-                JsonResponse.sendJsonErrorServerNotFound("The account with that id does not match any other.");
+        return JsonResponse.sendJsonErrorServerNotFound(response);
     }
 
-    /*@PatchMapping("/{id}")
-    public ResponseEntity<?> patchUpdate(@PathVariable  int id){
-
-    }*/
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> patchUpdate(@PathVariable  int id, Map<String, Object> AccountUpdated){
+        accountDTO response = serviceAccount.patchUpdate(id,  AccountUpdated);
+        return JsonResponse.sendJsonGenericDto(response);
+    }
 
 }

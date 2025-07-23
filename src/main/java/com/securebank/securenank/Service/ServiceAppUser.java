@@ -2,6 +2,7 @@ package com.securebank.securenank.Service;
 
 import com.securebank.securenank.DTO.app_userDTO;
 import com.securebank.securenank.DTO.app_user_view;
+import com.securebank.securenank.ExceptionHandler.ResourceNotFoundException;
 import com.securebank.securenank.Mapper.MapperAppUser;
 import com.securebank.securenank.Model.app_user;
 import com.securebank.securenank.Model.role;
@@ -17,33 +18,38 @@ import java.util.Optional;
 @Service
 public class ServiceAppUser {
 
-    private static RepositoryAppUser repositoryAppUser;
-    private static MapperAppUser mapperAppUser;
-    private static RepositoryRole repositoryRole;
-    private final PasswordEncoder passwordEncoder;
+    private final RepositoryAppUser repositoryAppUser;
+    private final MapperAppUser mapperAppUser;
+    private final RepositoryRole repositoryRole;
+    private final  PasswordEncoder passwordEncoder;
 
-    public ServiceAppUser(PasswordEncoder passwordEncoder) {
+    public ServiceAppUser(PasswordEncoder passwordEncoder,
+                          RepositoryAppUser repositoryAppUser,
+                          MapperAppUser mapperAppUser,
+                          RepositoryRole  repositoryRole) {
+        this.repositoryAppUser =  repositoryAppUser;
+        this.mapperAppUser = mapperAppUser;
+        this.repositoryRole = repositoryRole;
         this.passwordEncoder = passwordEncoder;
     }
 
 
     public app_user save(app_userDTO userDTO){
-        app_user user = mapperAppUser.convertToUser(userDTO);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if (user != null){
-            repositoryAppUser.save(user);
-            return user;
-        }
-        return user;
+        if(userDTO == null) throw new IllegalArgumentException("userDTO cannot be null");
+        app_user userSaved = mapperAppUser.convertToUser(userDTO);
+        return repositoryAppUser.save(userSaved);
     }
 
     public List<app_user_view> findAll(){
-        return repositoryAppUser.findAll().stream().map(mapperAppUser::convertToView).toList();
+        return repositoryAppUser.findAll().
+                stream().
+                map(mapperAppUser::convertToView)
+                .toList();
     }
 
     public app_user_view findByIdUser(int id){
-        app_user user = repositoryAppUser.findById(id).orElse(null);
-        return user != null ? mapperAppUser.convertToView(user) : new app_user_view();
+        return repositoryAppUser.findById(id).map(mapperAppUser::convertToView).orElseThrow(() ->
+                new ResourceNotFoundException("User not found with ID: " + id));
     }
 
     public app_user_view updateUser(int id, app_user_view user){
