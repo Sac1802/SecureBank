@@ -35,10 +35,10 @@ public class MapperAppUser {
 
     public app_user_view convertToView(app_user user){
         app_user_view userDTO = new app_user_view();
-        userDTO.id_user = user.getId_user();
-        userDTO.username  = user.getUsername();
-        userDTO.email = user.getEmail();
-        userDTO.role = user.getRole().getId_role();
+        userDTO.setId_user(user.getId_user());
+        userDTO.setUsername(user.getUsername());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setRole(user.getRole().getId_role());
         return userDTO;
     }
 }

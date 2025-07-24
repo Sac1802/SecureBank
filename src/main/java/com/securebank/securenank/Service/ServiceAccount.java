@@ -57,15 +57,9 @@ public class ServiceAccount {
     }
 
     public accountDTO updateAccount(accountDTO accountDTO, int id){
-        if( accountDTO.getId_user() == 0 || accountDTO.getId_card() == 0 ||
-                accountDTO.getMount_account_total() == 0){
-            throw new IllegalArgumentException("Invalid data to update the account.");
-        }
         account accountExists = repositoryAccount.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException("Account not found with ID: " + id));
-
         account mapperAccountDTO = mapperAccount.convertToAccount(accountDTO);
-
         accountExists.setId_user(mapperAccountDTO.getId_user());
         accountExists.setId_card(mapperAccountDTO.getId_card());
         accountExists.setMount_account_total(mapperAccountDTO.getMount_account_total());

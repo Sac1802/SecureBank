@@ -35,7 +35,6 @@ public class ServiceAppUser {
 
 
     public app_user save(app_userDTO userDTO){
-        if(userDTO == null) throw new IllegalArgumentException("userDTO cannot be null");
         app_user userSaved = mapperAppUser.convertToUser(userDTO);
         return repositoryAppUser.save(userSaved);
     }
@@ -53,52 +52,56 @@ public class ServiceAppUser {
     }
 
     public app_user_view updateUser(int id, app_user_view user){
-        Optional<app_user> userUpdate = repositoryAppUser.findById(user.id_user);
-        if(userUpdate.isPresent()){
-            userUpdate.get().setId_user(user.id_user);
-            userUpdate.get().setUsername(user.username);
-            userUpdate.get().setEmail(user.email);
-            Optional<role> newRole = repositoryRole.findById(user.role);
-            if(newRole.isEmpty()){
-                return null;
-            }
-            userUpdate.get().setRole(newRole.get());
-            repositoryAppUser.save(userUpdate.get());
-            return mapperAppUser.convertToView(userUpdate.get());
-        }
-        return null;
+        app_user userFindById = repositoryAppUser.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("User not found with ID:" + id));
+        role roleFindById = repositoryRole.findById(user.getRole()).orElseThrow(() ->
+                new ResourceNotFoundException("Role not found with ID:" + user.getRole()));
+        userFindById.setUsername(user.getUsername());
+        userFindById.setEmail(user.getEmail());
+        userFindById.setRole(roleFindById);
+        return mapperAppUser.convertToView(repositoryAppUser.save(userFindById));
     }
 
     public String delete(int id){
         Optional<app_user> findUser = repositoryAppUser.findById(id);
-        if(findUser.isPresent()){
-            repositoryAppUser.deleteById(id);
-            return "The user delete successfully";
+        if(findUser.isEmpty()){
+            throw new ResourceNotFoundException("User not found with ID: " + id);
         }
-        return "The user with that id was not found.";
+        repositoryAppUser.deleteById(id);
+        return "User deleted successfully";
     }
 
-    public app_user partialUpdate(int id, Map<String,  Object> update){
-        Optional<app_user> userUpdate = repositoryAppUser.findById(id);
-        if(userUpdate.isEmpty()) return null;
+    public app_user_view partialUpdate(int id, Map<String, Object> update) {
+        app_user userUpdate = repositoryAppUser.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("User not found with ID: " + id));
         update.forEach((key, value) -> {
-            switch (key){
+            if (value == null) throw new IllegalArgumentException("Value for '" + key + "' cannot be null.");
+            switch (key) {
                 case "username":
-                    userUpdate.get().setUsername((String) value);
+                    userUpdate.setUsername((String) value);
                     break;
                 case "email":
-                    userUpdate.get().setEmail((String) value);
+                    userUpdate.setEmail((String) value);
                     break;
                 case "password":
-                    userUpdate.get().setPassword(passwordEncoder.encode((String) value));
+                    userUpdate.setPassword(passwordEncoder.encode((String) value));
                     break;
                 case "role":
-                    userUpdate.get().setRole((role) value);
+                    try{
+                        int idRole = Integer.parseInt(value.toString());
+                        role roleFind = repositoryRole.findById(idRole).orElseThrow(() ->
+                                new ResourceNotFoundException("Role ID not found with ID:" + idRole));
+                        userUpdate.setRole(roleFind);
+                    }catch (NumberFormatException e){
+                        throw new IllegalArgumentException("Role ID must be a valid integer.");
+                    }
                     break;
                 default:
                     break;
             }
         });
-        return repositoryAppUser.save(userUpdate.get());
+
+        return mapperAppUser.convertToView(repositoryAppUser.save(userUpdate));
     }
+
 }

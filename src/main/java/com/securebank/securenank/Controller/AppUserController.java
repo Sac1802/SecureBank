@@ -5,7 +5,9 @@ import com.securebank.securenank.DTO.app_user_view;
 import com.securebank.securenank.Model.app_user;
 import com.securebank.securenank.Service.ServiceAppUser;
 import com.securebank.securenank.Utils.JsonResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -16,57 +18,46 @@ import java.util.Map;
 @RequestMapping("/user")
 public class AppUserController {
 
-    private ServiceAppUser serviceAppUser;
+    final ServiceAppUser serviceAppUser;
 
-
-    @PostMapping("/")
-    public ResponseEntity<?> saveUser(@RequestBody app_userDTO user){
-        app_user userSave = serviceAppUser.save(user);
-        return userSave != null
-                ? JsonResponse.sendJsonSuccessResponse("User Registered Successfully") :
-                JsonResponse.sendJsonErrorClientBadRequest("Role with id { " + user.role + "} not found");
+    public AppUserController(ServiceAppUser serviceAppUser){
+        this.serviceAppUser =  serviceAppUser;
     }
 
-    @GetMapping("/")
+
+    @PostMapping
+    public ResponseEntity<?> saveUser(@Valid @RequestBody app_userDTO user){
+        app_user userSave = serviceAppUser.save(user);
+        return JsonResponse.sendJsonGenericDto(userSave);
+    }
+
+    @GetMapping
     public ResponseEntity<?> getUsers(){
         List<app_user_view> listUsers = serviceAppUser.findAll();
-        return listUsers != null ?
-                JsonResponse.sendJsonGenericObjectList(listUsers) :
-                JsonResponse.sendJsonErrorServerNotFound(new ArrayList<app_user_view>().toString());
+        return JsonResponse.sendJsonGenericObjectList(listUsers);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable int id){
         app_user_view user = serviceAppUser.findByIdUser(id);
-        return user != null ? JsonResponse.sendJsonGenericDto(user) :
-                JsonResponse.sendJsonErrorServerNotFound("User with id { " + id + "} not found");
+        return JsonResponse.sendJsonGenericDto(user);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUserTotal(@PathVariable int id, @RequestBody app_user_view user){
-        if(user == null || user.id_user == 0 || user.username.trim().isEmpty() || user.email.trim().isEmpty()
-                || user.role == 0){
-            return JsonResponse.sendJsonErrorServerForbidden("It is necessary to provide all user data for the update");
-        }
+    public ResponseEntity<?> updateUserFull(@PathVariable int id, @Valid @RequestBody app_user_view user){
         app_user_view userUpdated = serviceAppUser.updateUser(id, user);
-        return userUpdated != null ? JsonResponse.sendJsonSuccessResponse("The user updated successfully") :
-                JsonResponse.sendJsonErrorServerNotFound("The user with that id was not found.");
+        return JsonResponse.sendJsonGenericDto(userUpdated);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable int id){
         String delete = serviceAppUser.delete(id);
-        return JsonResponse.sendJsonErrorServerNotFound(delete);
+        return JsonResponse.sendJsonSuccessResponse(delete);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody Map<String, Object> updates){
-        try{
-            app_user updateUser = serviceAppUser.partialUpdate(id, updates);
-            return JsonResponse.sendJsonSuccessResponse("User Update Successfully");
-        }catch (Exception e){
-            return JsonResponse.sendJsonErrorClientBadRequest("User not found");
-        }
+    public ResponseEntity<?> updateUser(@PathVariable int id, @Valid @RequestBody Map<String, Object> updates){
+        app_user_view updateUser = serviceAppUser.partialUpdate(id, updates);
+        return JsonResponse.sendJsonGenericDto(updateUser);
     }
-
 }
