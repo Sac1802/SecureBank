@@ -20,7 +20,7 @@ public class AccountController {
     private ServiceAccount serviceAccount;
 
     @PostMapping("/")
-    public ResponseEntity<?> saveAccount(@RequestBody accountDTO accountDTO){
+    public ResponseEntity<?> saveAccount(@Valid @RequestBody accountDTO accountDTO){
         account accountSaved = serviceAccount.saveAccountService(accountDTO);
         return JsonResponse.sendJsonGenericDto(accountSaved);
     }
@@ -51,7 +51,8 @@ public class AccountController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> patchUpdate(@PathVariable  int id, Map<String, Object> AccountUpdated){
+    public ResponseEntity<?> patchUpdate(@PathVariable  int id,
+                                         @Valid @RequestBody Map<String, Object> AccountUpdated){
         accountDTO response = serviceAccount.patchUpdate(id,  AccountUpdated);
         return JsonResponse.sendJsonGenericDto(response);
     }
