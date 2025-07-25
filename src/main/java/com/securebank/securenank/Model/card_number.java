@@ -9,81 +9,102 @@ public class card_number {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_card;
+    private int idCard;
 
-    @Column(name = "number_card", unique = true)
-    private String number_card;
+    @Column(name = "last4", length = 4, nullable = false)
+    private String last4;
 
-    @Column(name = "expired_date")
-    private Date expired_date;
+    @Column(name = "encrypted_number")
+    private String encryptedNumber;
 
-    @Column(name = "cvv")
-    private String cvv;
+    @Column(name = "expiry_month", nullable = false)
+    private int expiryMonth;
+
+    @Column(name = "expiry_year", nullable = false)
+    private int expiryYear;
 
     @Column(name = "type_card")
-    private String type_card;
+    private String typeCard;
 
     @Column(name = "brand_card")
-    private String brand_card;
+    private String brandCard;
 
-    public card_number(String cvv, int id_card, String number_card, Date expired_date, String type_card,
-                       String brand_card) {
-        this.cvv = cvv;
-        this.id_card = id_card;
-        this.number_card = number_card;
-        this.expired_date = expired_date;
-        this.type_card = type_card;
-        this.brand_card = brand_card;
+    @Column(name = "card_token", unique = true)
+    private String cardToken;
+
+    public card_number(int idCard, String last4, String encryptedNumber, int expiryMonth,
+                       int expiryYear, String typeCard, String brandCard, String cardToken) {
+        this.idCard = idCard;
+        this.last4 = last4;
+        this.encryptedNumber = encryptedNumber;
+        this.expiryMonth = expiryMonth;
+        this.expiryYear = expiryYear;
+        this.typeCard = typeCard;
+        this.brandCard = brandCard;
+        this.cardToken = cardToken;
     }
 
-    public card_number() {
+    public int getIdCard() {
+        return idCard;
     }
 
-    public int getId_card() {
-        return id_card;
+    public void setIdCard(int idCard) {
+        this.idCard = idCard;
     }
 
-    public void setId_card(int id_card) {
-        this.id_card = id_card;
+    public String getLast4() {
+        return last4;
     }
 
-    public String getNumber_card() {
-        return number_card;
+    public void setLast4(String last4) {
+        this.last4 = last4;
     }
 
-    public void setNumber_card(String number_card) {
-        this.number_card = number_card;
+    public String getEncryptedNumber() {
+        return encryptedNumber;
     }
 
-    public Date getExpired_date() {
-        return expired_date;
+    public void setEncryptedNumber(String encryptedNumber) {
+        this.encryptedNumber = encryptedNumber;
     }
 
-    public void setExpired_date(Date expired_date) {
-        this.expired_date = expired_date;
+    public int getExpiryMonth() {
+        return expiryMonth;
     }
 
-    public String getCvv() {
-        return cvv;
+    public void setExpiryMonth(int expiryMonth) {
+        this.expiryMonth = expiryMonth;
     }
 
-    public void setCvv(String cvv) {
-        this.cvv = cvv;
+    public int getExpiryYear() {
+        return expiryYear;
     }
 
-    public String getType_card() {
-        return type_card;
+    public void setExpiryYear(int expiryYear) {
+        this.expiryYear = expiryYear;
     }
 
-    public void setType_card(String type_card) {
-        this.type_card = type_card;
+    public String getTypeCard() {
+        return typeCard;
     }
 
-    public String getBrand_card() {
-        return brand_card;
+    public void setTypeCard(String typeCard) {
+        this.typeCard = typeCard;
     }
 
-    public void setBrand_card(String brand_card) {
-        this.brand_card = brand_card;
+    public String getBrandCard() {
+        return brandCard;
+    }
+
+    public void setBrandCard(String brandCard) {
+        this.brandCard = brandCard;
+    }
+
+    public String getCardToken() {
+        return cardToken;
+    }
+
+    public void setCardToken(String cardToken) {
+        this.cardToken = cardToken;
     }
 }
