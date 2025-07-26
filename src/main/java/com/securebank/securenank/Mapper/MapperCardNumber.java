@@ -34,6 +34,8 @@ public class MapperCardNumber {
         cardView.setExpiryMonth(card.getExpiryMonth());
         cardView.setExpiryMonth(card.getExpiryMonth());
         cardView.setCardToken(card.getCardToken());
+        cardView.setTypeCard(cardView.getTypeCard());
+        cardView.setBrandCard(cardView.getBrandCard());
         return cardView;
     }
 

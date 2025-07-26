@@ -30,11 +30,12 @@ public class card_numberDTO {
     private int expiryYear;
 
     @NotBlank
-    @Size(min = 4, message = "You must have a type of card, either Debit or Credit.")
+    @Pattern(regexp = "debit|credit", message = "The card must be credit or debit.")
     private String typeCard;
 
     @NotBlank
-    @Size(min = 4, message = "It must have a brand, either MasterCard or Visa.")
+    @Pattern(regexp = "visa|mastercard|american_express",
+            message = "The card brand must be Visa, MasterCard or American Express")
     private String brandCard;
 
     @NotBlank

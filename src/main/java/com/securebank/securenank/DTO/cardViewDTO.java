@@ -2,6 +2,7 @@ package com.securebank.securenank.DTO;
 
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class cardViewDTO {
@@ -20,6 +21,15 @@ public class cardViewDTO {
     @NotBlank
     @Size(min = 10, message = "The token must have at least 10 characters.")
     private String cardToken;
+
+    @NotBlank
+    @Pattern(regexp = "visa|mastercard|american_express",
+            message = "The card brand must be Visa, MasterCard or American Express")
+    private String brandCard;
+
+    @NotBlank
+    @Pattern(regexp = "debit|credit", message = "The card must be credit or debit.")
+    private String typeCard;
 
     public String getLast4() {
         return last4;
@@ -51,5 +61,21 @@ public class cardViewDTO {
 
     public void setCardToken(String cardToken) {
         this.cardToken = cardToken;
+    }
+
+    public String getBrandCard() {
+        return brandCard;
+    }
+
+    public void setBrandCard(String brandCard) {
+        this.brandCard = brandCard;
+    }
+
+    public String getTypeCard() {
+        return typeCard;
+    }
+
+    public void setTypeCard(String typeCard) {
+        this.typeCard = typeCard;
     }
 }
