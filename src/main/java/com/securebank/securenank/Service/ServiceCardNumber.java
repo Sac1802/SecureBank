@@ -4,6 +4,7 @@ import com.securebank.securenank.DTO.cardViewDTO;
 import com.securebank.securenank.DTO.card_numberDTO;
 import com.securebank.securenank.Mapper.MapperCardNumber;
 import com.securebank.securenank.Repository.RepositoryCardNumber;
+import com.securebank.securenank.Utils.AESUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -14,17 +15,22 @@ public class ServiceCardNumber {
 
     private final RepositoryCardNumber repositoryCardNumber;
     private final MapperCardNumber mapperCardNumber;
+    private final AESUtil aesUtil;
 
     public ServiceCardNumber(RepositoryCardNumber repositoryCardNumber,
-                             MapperCardNumber mapperCardNumber){
+                             MapperCardNumber mapperCardNumber,
+                             AESUtil aesUtil){
         this.repositoryCardNumber = repositoryCardNumber;
         this.mapperCardNumber = mapperCardNumber;
+        this.aesUtil = aesUtil;
     }
 
-    public cardViewDTO createNewCard(Map<String, Object> brandAndType){
+    public cardViewDTO createNewCard(Map<String, Object> brandAndType) throws Exception {
         String brand =  brandAndType.get("brandCard").toString().toLowerCase();
         String type = brandAndType.get("typeCard").toString().toLowerCase();
         String numberCard = generateNumberCard(type, brand);
+        String last4 = numberCard.substring(numberCard.length() - 4);
+        String encryptedNumber = aesUtil.encrypt(numberCard);
         return new cardViewDTO();
     }
 
