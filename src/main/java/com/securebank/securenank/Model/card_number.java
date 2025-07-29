@@ -44,6 +44,10 @@ public class card_number {
         this.cardToken = cardToken;
     }
 
+    public card_number(){
+
+    }
+
     public int getIdCard() {
         return idCard;
     }

@@ -1,12 +1,14 @@
 package com.securebank.securenank.Service;
 
 import com.securebank.securenank.DTO.cardViewDTO;
-import com.securebank.securenank.DTO.card_numberDTO;
 import com.securebank.securenank.Mapper.MapperCardNumber;
+import com.securebank.securenank.Model.card_number;
 import com.securebank.securenank.Repository.RepositoryCardNumber;
 import com.securebank.securenank.Utils.AESUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.UUID;
 
@@ -25,13 +27,23 @@ public class ServiceCardNumber {
         this.aesUtil = aesUtil;
     }
 
+    @Transactional
     public cardViewDTO createNewCard(Map<String, Object> brandAndType) throws Exception {
+        card_number newCard = new card_number();
         String brand =  brandAndType.get("brandCard").toString().toLowerCase();
         String type = brandAndType.get("typeCard").toString().toLowerCase();
         String numberCard = generateNumberCard(type, brand);
         String last4 = numberCard.substring(numberCard.length() - 4);
-        String encryptedNumber = aesUtil.encrypt(numberCard);
-        return new cardViewDTO();
+        LocalDate nowDate = LocalDate.now();
+        newCard.setBrandCard(brand);
+        newCard.setTypeCard(type);
+        newCard.setLast4(last4);
+        newCard.setEncryptedNumber(aesUtil.encrypt(numberCard));
+        newCard.setCardToken(generateCardToken());
+        newCard.setExpiryYear(nowDate.getYear() + 4);
+        newCard.setExpiryMonth(nowDate.getMonthValue());
+        card_number savedCard = repositoryCardNumber.save(newCard);
+        return mapperCardNumber.convertToView(savedCard);
     }
 
     public String generateCardToken(){
