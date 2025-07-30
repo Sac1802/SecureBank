@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,6 +25,12 @@ public class CardNumberController {
     public ResponseEntity<?> saveCard(@Valid @RequestBody Map<String, Object> data) throws Exception {
         cardViewDTO cardGenerated = serviceCardNumber.createNewCard(data);
         return JsonResponse.sendJsonGenericDto(cardGenerated);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getAllCards(){
+        List<cardViewDTO> cardViewDTOList = serviceCardNumber.getAllCard();
+        return JsonResponse.sendJsonGenericObjectList(cardViewDTOList);
     }
 
 }

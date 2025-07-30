@@ -1,6 +1,7 @@
 package com.securebank.securenank.Service;
 
 import com.securebank.securenank.DTO.cardViewDTO;
+import com.securebank.securenank.ExceptionHandler.ResourceNotFoundException;
 import com.securebank.securenank.Mapper.MapperCardNumber;
 import com.securebank.securenank.Model.card_number;
 import com.securebank.securenank.Repository.RepositoryCardNumber;
@@ -9,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -45,6 +47,24 @@ public class ServiceCardNumber {
         card_number savedCard = repositoryCardNumber.save(newCard);
         return mapperCardNumber.convertToView(savedCard);
     }
+
+    public List<cardViewDTO> getAllCard(){
+        return repositoryCardNumber.findAll()
+                .stream()
+                .map(mapperCardNumber::convertToView)
+                .toList();
+    }
+
+    public cardViewDTO getFindById(int id){
+        return repositoryCardNumber.findById(id)
+                .map(mapperCardNumber::convertToView)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("The id card not exist"));
+    }
+
+//    public cardViewDTO  updateCard(int id, Map<String, Object> dataUpdate){
+//
+//    }
 
     public String generateCardToken(){
         return "tok_" + UUID.randomUUID().toString().replace("-", "".substring(0, 16));
