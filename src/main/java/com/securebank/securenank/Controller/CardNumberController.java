@@ -33,4 +33,9 @@ public class CardNumberController {
         return JsonResponse.sendJsonGenericObjectList(cardViewDTOList);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable int id){
+        cardViewDTO cardFind = serviceCardNumber.getFindById(id);
+        return JsonResponse.sendJsonGenericDto(cardFind);
+    }
 }
