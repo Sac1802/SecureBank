@@ -9,9 +9,8 @@
 - Spring Security
 - JWT (JSON Web Tokens)
 - Spring Data JPA
-- H2 / PostgreSQL (configurable)
+- MySQL
 - Maven
-- Lombok
 
 ## ✨ Features
 
@@ -19,7 +18,7 @@
 - 🔒 Role-based authorization (`ADMIN`, `USER`, etc.).
 - 🧾 Endpoint protection according to user roles.
 - 🔄 User registration and login system.
-- 📃 Optional API documentation with Swagger.
+- 📃 API documentation with Swagger.
 
 ## 📁 Project Structure
 
@@ -37,7 +36,6 @@ securebank/
 │   │   │       └── service/
 │   │   └── resources/
 │   │       ├── application.properties
-│   │       └── data.sql (optional)
 └── pom.xml
 
 ```
