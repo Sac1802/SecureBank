@@ -12,7 +12,8 @@ public class MapperCardNumber {
         return new card_number(card_numberDTO.getIdCard(), card_numberDTO.getLast4(),
                 card_numberDTO.getEncryptedNumber(), card_numberDTO.getExpiryMonth(),
                 card_numberDTO.getExpiryYear(), card_numberDTO.getTypeCard(),
-                card_numberDTO.getBrandCard(), card_numberDTO.getCardToken());
+                card_numberDTO.getBrandCard(), card_numberDTO.getCardToken(),
+                card_numberDTO.getStatus());
     }
 
     public card_numberDTO convertToDTO(card_number cardNumber){
@@ -25,6 +26,7 @@ public class MapperCardNumber {
         card_numberDTO.setTypeCard(cardNumber.getTypeCard());
         card_numberDTO.setBrandCard(cardNumber.getBrandCard());
         card_numberDTO.setCardToken(cardNumber.getCardToken());
+        card_numberDTO.setStatus(cardNumber.getStatus());
         return card_numberDTO;
     }
 
@@ -34,8 +36,9 @@ public class MapperCardNumber {
         cardView.setExpiryMonth(card.getExpiryMonth());
         cardView.setExpiryMonth(card.getExpiryMonth());
         cardView.setCardToken(card.getCardToken());
-        cardView.setTypeCard(cardView.getTypeCard());
-        cardView.setBrandCard(cardView.getBrandCard());
+        cardView.setTypeCard(card.getTypeCard());
+        cardView.setBrandCard(card.getBrandCard());
+        cardView.setStatus(card.getStatus());
         return cardView;
     }
 

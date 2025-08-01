@@ -1,5 +1,6 @@
 package com.securebank.securenank.DTO;
 
+import com.securebank.securenank.Utils.StatusCard;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -23,9 +24,13 @@ public class cardViewDTO {
     private String cardToken;
 
     @NotBlank
-    @Pattern(regexp = "visa|mastercard|american_express",
+    @Pattern(regexp = "visa|mastercard",
             message = "The card brand must be Visa, MasterCard or American Express")
     private String brandCard;
+
+    @Pattern(regexp = "ACTIVE|INACTIVE|BLOCKED|EXPIRED",
+            message = "a card statement is required")
+    private StatusCard status;
 
     @NotBlank
     @Pattern(regexp = "debit|credit", message = "The card must be credit or debit.")
@@ -77,5 +82,13 @@ public class cardViewDTO {
 
     public void setTypeCard(String typeCard) {
         this.typeCard = typeCard;
+    }
+
+    public StatusCard getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusCard status) {
+        this.status = status;
     }
 }

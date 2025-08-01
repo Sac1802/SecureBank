@@ -4,7 +4,9 @@ import com.securebank.securenank.DTO.cardViewDTO;
 import com.securebank.securenank.DTO.card_numberDTO;
 import com.securebank.securenank.Service.ServiceCardNumber;
 import com.securebank.securenank.Utils.JsonResponse;
+import com.securebank.securenank.Utils.StatusCard;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,5 +39,11 @@ public class CardNumberController {
     public ResponseEntity<?> getById(@PathVariable int id){
         cardViewDTO cardFind = serviceCardNumber.getFindById(id);
         return JsonResponse.sendJsonGenericDto(cardFind);
+    }
+
+    @PatchMapping("/status/{id}")
+    public ResponseEntity<?> updateStatus(@PathVariable int id, StatusCard newStatus){
+        cardViewDTO cardUpdatedStatus = serviceCardNumber.updateCardStatus(id, newStatus);
+        return JsonResponse.sendJsonGenericDto(cardUpdatedStatus);
     }
 }
