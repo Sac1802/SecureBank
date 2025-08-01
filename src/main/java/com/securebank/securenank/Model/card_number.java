@@ -1,5 +1,6 @@
 package com.securebank.securenank.Model;
 
+import com.securebank.securenank.Utils.StatusCard;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -32,8 +33,13 @@ public class card_number {
     @Column(name = "card_token", unique = true)
     private String cardToken;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private StatusCard status;
+
     public card_number(int idCard, String last4, String encryptedNumber, int expiryMonth,
-                       int expiryYear, String typeCard, String brandCard, String cardToken) {
+                       int expiryYear, String typeCard, String brandCard, String cardToken, StatusCard
+                       status) {
         this.idCard = idCard;
         this.last4 = last4;
         this.encryptedNumber = encryptedNumber;
@@ -42,6 +48,7 @@ public class card_number {
         this.typeCard = typeCard;
         this.brandCard = brandCard;
         this.cardToken = cardToken;
+        this.status = status;
     }
 
     public card_number(){
@@ -110,5 +117,13 @@ public class card_number {
 
     public void setCardToken(String cardToken) {
         this.cardToken = cardToken;
+    }
+
+    public StatusCard getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusCard status) {
+        this.status = status;
     }
 }

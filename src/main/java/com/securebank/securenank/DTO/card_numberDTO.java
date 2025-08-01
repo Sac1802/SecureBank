@@ -1,5 +1,6 @@
 package com.securebank.securenank.DTO;
 
+import com.securebank.securenank.Utils.StatusCard;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,13 +35,17 @@ public class card_numberDTO {
     private String typeCard;
 
     @NotBlank
-    @Pattern(regexp = "visa|mastercard|american_express",
+    @Pattern(regexp = "visa|mastercard",
             message = "The card brand must be Visa, MasterCard or American Express")
     private String brandCard;
 
     @NotBlank
     @Size(min = 10, message = "The token must have at least 10 characters.")
     private String cardToken;
+
+    @Pattern(regexp = "ACTIVE|INACTIVE|BLOCKED|EXPIRED",
+            message = "a card statement is required")
+    private StatusCard status;
 
     public int getIdCard() {
         return idCard;
@@ -104,5 +109,13 @@ public class card_numberDTO {
 
     public void setCardToken(String cardToken) {
         this.cardToken = cardToken;
+    }
+
+    public StatusCard getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusCard status) {
+        this.status = status;
     }
 }

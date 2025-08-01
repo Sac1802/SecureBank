@@ -6,6 +6,7 @@ import com.securebank.securenank.Mapper.MapperCardNumber;
 import com.securebank.securenank.Model.card_number;
 import com.securebank.securenank.Repository.RepositoryCardNumber;
 import com.securebank.securenank.Utils.AESUtil;
+import com.securebank.securenank.Utils.StatusCard;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -62,9 +63,13 @@ public class ServiceCardNumber {
                         new ResourceNotFoundException("The id card not exist"));
     }
 
-//    public cardViewDTO  updateCard(int id, Map<String, Object> dataUpdate){
-//
-//    }
+    public cardViewDTO  updateCardStatus(int id, StatusCard newStatus){
+        card_number findCard = repositoryCardNumber.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Account not found with ID:" + id));
+        findCard.setStatus(newStatus);
+        card_number cardUpdated = repositoryCardNumber.save(findCard);
+        return mapperCardNumber.convertToView(cardUpdated);
+    }
 
     public String generateCardToken(){
         return "tok_" + UUID.randomUUID().toString().replace("-", "".substring(0, 16));
