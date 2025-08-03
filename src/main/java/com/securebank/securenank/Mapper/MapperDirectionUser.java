@@ -9,18 +9,19 @@ public class MapperDirectionUser {
 
     public direction_userDTO convertToDTO(direction_user direction){
         direction_userDTO directionDTO  = new direction_userDTO();
-        directionDTO.id_direction_user = direction.getId_direction_user();
-        directionDTO.number_house = direction.getNumber_house();
-        directionDTO.name_street = direction.getName_street();
-        directionDTO.nomenclature = direction.getNomenclature();
-        directionDTO.country = direction.getCountry();
-        directionDTO.city = direction.getCity();
+        directionDTO.setId_direction_user(direction.getId_direction_user());
+        directionDTO.setNumber_house(direction.getNumber_house());
+        directionDTO.setName_street(direction.getName_street());
+        directionDTO.setNomenclature(direction.getNomenclature());
+        directionDTO.setCountry(direction.getCountry());
+        directionDTO.setCity(direction.getCity());
         return directionDTO;
     }
 
     public direction_user convertToDirection(direction_userDTO directionDTO){
-        return new direction_user(directionDTO.id_direction_user, directionDTO.number_house, directionDTO.name_street,
-                directionDTO.nomenclature, directionDTO.country, directionDTO.city);
+        return new direction_user(directionDTO.getId_direction_user(), directionDTO.getNumber_house(),
+                directionDTO.getName_street(), directionDTO.getNomenclature(), directionDTO.getCountry(),
+                directionDTO.getCity());
     }
 
 }
