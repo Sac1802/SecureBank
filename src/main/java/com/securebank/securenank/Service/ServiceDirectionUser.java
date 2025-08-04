@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServiceDirectionUser {
@@ -55,5 +56,14 @@ public class ServiceDirectionUser {
 
         repositoryDirectionUser.save(existsDirection);
         return mapperDirectionUser.convertToDTO(existsDirection);
+    }
+
+    public String deleteDirection_user(int id){
+        Optional<direction_user> existsDirection =  repositoryDirectionUser.findById(id);
+        if(existsDirection.isEmpty()){
+            throw new ResourceNotFoundException("Account not found with ID: " + id);
+        }
+        repositoryDirectionUser.deleteById(id);
+        return "Direction delete successfully";
     }
 }
