@@ -8,7 +8,9 @@ import com.securebank.securenank.Repository.RepositoryDirectionUser;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -24,12 +26,13 @@ public class ServiceDirectionUser {
     }
 
     @Transactional
-    public direction_user saveDirectionUser(direction_userDTO directionUserDTO){
+    public direction_userDTO saveDirectionUser(direction_userDTO directionUserDTO){
         if(directionUserDTO == null){
             throw new IllegalArgumentException("Direction User cannot be null");
         }
         direction_user  directionSaved  = mapperDirectionUser.convertToDirection(directionUserDTO);
-        return repositoryDirectionUser.save(directionSaved);
+        direction_user savedDirection = repositoryDirectionUser.save(directionSaved);
+        return mapperDirectionUser.convertToDTO(savedDirection);
     }
 
     public List<direction_userDTO>  findAllDirection(){
@@ -61,9 +64,67 @@ public class ServiceDirectionUser {
     public String deleteDirection_user(int id){
         Optional<direction_user> existsDirection =  repositoryDirectionUser.findById(id);
         if(existsDirection.isEmpty()){
-            throw new ResourceNotFoundException("Account not found with ID: " + id);
+            throw new ResourceNotFoundException("Direction not found with ID: " + id);
         }
         repositoryDirectionUser.deleteById(id);
         return "Direction delete successfully";
+    }
+
+    public direction_userDTO patchDirection(Map<String, Object> dataDirection, int id){
+        direction_user findDirection = repositoryDirectionUser.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("\"Direction not found with ID:" + id));
+        dataDirection.forEach((key, value) -> {
+            switch (key){
+                case "number_house":
+                    try {
+                        int newNumberHouse = Integer.parseInt(value.toString());
+                        findDirection.setNumber_house(newNumberHouse);
+                        break;
+                    }catch (NumberFormatException err){
+                        throw new IllegalArgumentException("Invalid number house format: " + err.getMessage());
+                    }
+                case "name_street":
+                    try{
+                        String nameStreet = value.toString();
+                        findDirection.setName_street(nameStreet);
+                        break;
+                    }catch (ClassCastException err){
+                        throw new IllegalArgumentException("Invalid name street format: " + err.getMessage());
+                    }
+
+                case "nomenclature":
+                    try {
+                        String newNomenclature = value.toString();
+                        findDirection.setNomenclature(newNomenclature);
+                        break;
+                    }catch (ClassCastException err){
+                        throw new IllegalArgumentException("Invalid nomenclature format: " + err.getMessage());
+                    }
+
+                case "country":
+                    try{
+                        String newCountry = value.toString();
+                        findDirection.setCountry(newCountry);
+                        break;
+                    }catch (ClassCastException err){
+                        throw new IllegalArgumentException("Invalid country format: " +  err.getMessage());
+                    }
+
+                case "city":
+                    try {
+                        String newCity = value.toString();
+                        findDirection.setCity(newCity);
+                        break;
+                    }catch (ClassCastException err){
+                        throw new IllegalArgumentException("Invalid city format: " + err.getMessage());
+                    }
+
+                default:
+                    break;
+
+            }
+        });
+        repositoryDirectionUser.save(findDirection);
+        return mapperDirectionUser.convertToDTO(findDirection);
     }
 }
