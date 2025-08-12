@@ -19,7 +19,7 @@ public class Security {
                 .authorizeHttpRequests(request -> {
                     request.
                             requestMatchers(HttpMethod.POST, "/account").permitAll()
-                            .requestMatchers(HttpMethod.POST, "login").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/login").permitAll()
                             .anyRequest()
                             .authenticated();
                 });
