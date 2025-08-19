@@ -8,6 +8,7 @@ import com.securebank.securenank.Model.app_user;
 import com.securebank.securenank.Model.role;
 import com.securebank.securenank.Repository.RepositoryAppUser;
 import com.securebank.securenank.Repository.RepositoryRole;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,19 +24,19 @@ public class ServiceAppUser {
     private final RepositoryRole repositoryRole;
     private final  PasswordEncoder passwordEncoder;
 
-    public ServiceAppUser(PasswordEncoder passwordEncoder,
-                          RepositoryAppUser repositoryAppUser,
+    public ServiceAppUser(RepositoryAppUser repositoryAppUser,
                           MapperAppUser mapperAppUser,
                           RepositoryRole  repositoryRole) {
         this.repositoryAppUser =  repositoryAppUser;
         this.mapperAppUser = mapperAppUser;
         this.repositoryRole = repositoryRole;
-        this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
 
     public app_user save(app_userDTO userDTO){
         app_user userSaved = mapperAppUser.convertToUser(userDTO);
+        userSaved.setPassword(passwordEncoder.encode(userSaved.getPassword()));
         return repositoryAppUser.save(userSaved);
     }
 
