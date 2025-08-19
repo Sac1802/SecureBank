@@ -70,7 +70,7 @@ public class GetKeys {
         return (RSAPublicKey) kf.generatePublic(spec);
     }
 
-    public KeyPair createNewKeys() throws Exception {
+    private KeyPair createNewKeys() throws Exception {
         KeyPair keys = createKey();
         try{
             Path folder = Paths.get("./RSAKeys");

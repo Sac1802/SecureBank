@@ -18,9 +18,15 @@ import java.util.Date;
 @Service
 public class AuthToken {
 
+    private final GetKeys getKeys;
+
+    public AuthToken(GetKeys getKeys){
+        this.getKeys = getKeys;
+    }
+
     public String generateToken(app_user user){
         try{
-            KeyPair keyPair = createKey();
+            KeyPair keyPair = getKeys.getKeys();
             RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
             RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
             Algorithm algorithm = Algorithm.RSA256(publicKey, privateKey);
@@ -39,7 +45,7 @@ public class AuthToken {
     public DecodedJWT verifyToken(String token) throws Exception {
         DecodedJWT decodedJWT;
         try{
-            KeyPair keyPair = createKey();
+            KeyPair keyPair = getKeys.getKeys();
             RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
             RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
             Algorithm algorithm = Algorithm.RSA256(publicKey, privateKey);
