@@ -13,15 +13,15 @@ public class history_transaction {
     @Column(name = "datetime")
     private Date datetime;
 
-    @ManyToMany
-    @Column(name = "account")
-    private account account;
+    @ManyToOne
+    @JoinColumn(name = "account")
+    private Account account;
 
     @Column(name = "amount")
     private float amount;
 
     public history_transaction(int id_history, Date datetime,
-                               com.securebank.securenank.Model.account account, float amount) {
+                               Account account, float amount) {
         this.id_history = id_history;
         this.datetime = datetime;
         this.account = account;
@@ -47,11 +47,11 @@ public class history_transaction {
         this.datetime = datetime;
     }
 
-    public com.securebank.securenank.Model.account getAccount() {
+    public Account getAccount() {
         return account;
     }
 
-    public void setAccount(com.securebank.securenank.Model.account account) {
+    public void setAccount(Account account) {
         this.account = account;
     }
 

@@ -3,31 +3,31 @@ package com.securebank.securenank.Model;
 import jakarta.persistence.*;
 
 @Entity
-public class account {
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_account;
 
-    @OneToMany
-    @Column(name = "id_user")
+    @ManyToOne
+    @JoinColumn(name = "id_user")
     private  app_user id_user;
 
     @OneToOne
-    @Column(name = "id_card")
+    @JoinColumn(name = "id_card")
     private card_number id_card;
 
     @Column(name = "mount_account_total")
     private float mount_account_total;
 
-    public account(int id_account, app_user id_user, card_number id_card, float mount_account_total) {
+    public Account(int id_account, app_user id_user, card_number id_card, float mount_account_total) {
         this.id_account = id_account;
         this.id_user = id_user;
         this.id_card = id_card;
         this.mount_account_total = mount_account_total;
     }
 
-    public account() {
+    public Account() {
     }
 
     public int getId_account() {

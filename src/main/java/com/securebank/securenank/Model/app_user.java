@@ -17,8 +17,8 @@ public class app_user {
     @Column(name = "password")
     private String password;
 
-    @OneToMany
-    @Column(name = "role")
+    @OneToOne
+    @JoinColumn(name = "role")
     private role role;
 
     public app_user(int id_user, String username, String email, com.securebank.securenank.Model.role role, String password) {

@@ -1,15 +1,13 @@
 package com.securebank.securenank.Controller;
 
 import com.securebank.securenank.DTO.accountDTO;
-import com.securebank.securenank.Model.account;
+import com.securebank.securenank.Model.Account;
 import com.securebank.securenank.Service.ServiceAccount;
 import com.securebank.securenank.Utils.JsonResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +19,7 @@ public class AccountController {
 
     @PostMapping("/")
     public ResponseEntity<?> saveAccount(@Valid @RequestBody accountDTO accountDTO){
-        account accountSaved = serviceAccount.saveAccountService(accountDTO);
+        Account accountSaved = serviceAccount.saveAccountService(accountDTO);
         return JsonResponse.sendJsonGenericDto(accountSaved);
     }
 
