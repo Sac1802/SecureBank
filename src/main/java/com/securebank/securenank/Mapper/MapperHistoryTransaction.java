@@ -1,7 +1,7 @@
 package com.securebank.securenank.Mapper;
 
 import com.securebank.securenank.DTO.history_transactionDTO;
-import com.securebank.securenank.Model.account;
+import com.securebank.securenank.Model.Account;
 import com.securebank.securenank.Model.history_transaction;
 import com.securebank.securenank.Repository.RepositoryAccount;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ public class MapperHistoryTransaction {
     }
 
     public history_transaction convertToHistory(history_transactionDTO historyDTO){
-        Optional<account> account = repositoryAccount.findById(historyDTO.account);
+        Optional<Account> account = repositoryAccount.findById(historyDTO.account);
         if(account.isPresent()){
             return new history_transaction(historyDTO.id_history, historyDTO.datetime,
                     account.get(), historyDTO.amount);

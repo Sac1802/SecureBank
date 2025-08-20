@@ -1,7 +1,7 @@
 package com.securebank.securenank.Mapper;
 
 import com.securebank.securenank.DTO.transferDTO;
-import com.securebank.securenank.Model.account;
+import com.securebank.securenank.Model.Account;
 import com.securebank.securenank.Model.transfer;
 import com.securebank.securenank.Repository.RepositoryAccount;
 import org.springframework.stereotype.Component;
@@ -23,8 +23,8 @@ public class MapperTransfer {
     }
 
     public transfer convertToTransfer(transferDTO transferDTO){
-        Optional<account> fromAccount = repositoryAccount.findById(transferDTO.from_account);
-        Optional<account> toAccount = repositoryAccount.findById(transferDTO.to_account);
+        Optional<Account> fromAccount = repositoryAccount.findById(transferDTO.from_account);
+        Optional<Account> toAccount = repositoryAccount.findById(transferDTO.to_account);
         if(fromAccount.isPresent() && toAccount.isPresent()){
             return new transfer(transferDTO.id_transfer, fromAccount.get(), toAccount.get(), transferDTO.amount);
         }

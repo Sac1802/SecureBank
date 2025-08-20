@@ -1,7 +1,7 @@
 package com.securebank.securenank.Model;
 
 import jakarta.persistence.*;
-import jakarta.websocket.Decoder;
+import org.w3c.dom.Text;
 
 @Entity
 public class audit_log {
@@ -9,8 +9,8 @@ public class audit_log {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_log;
 
-    @ManyToMany
-    @Column(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private app_user user_id;
 
     @Column(name = "action")
@@ -22,11 +22,12 @@ public class audit_log {
     @Column(name = "entity_id")
     private int entity_id;
 
+    @Lob
     @Column(name = "details")
-    private Decoder.Text details;
+    private String details;
 
     public audit_log(int id_log, app_user user_id, String action, String entity,
-                     int entity_id, Decoder.Text details) {
+                     int entity_id, String details) {
         this.id_log = id_log;
         this.user_id = user_id;
         this.action = action;
@@ -78,11 +79,11 @@ public class audit_log {
         this.entity_id = entity_id;
     }
 
-    public Decoder.Text getDetails() {
+    public String getDetails() {
         return details;
     }
 
-    public void setDetails(Decoder.Text details) {
+    public void setDetails(String details) {
         this.details = details;
     }
 }

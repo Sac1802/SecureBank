@@ -1,11 +1,13 @@
 package com.securebank.securenank.Utils;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
+@Component
 public class AESUtil {
 
     private final String ALGORITHM = "AES";

@@ -19,11 +19,11 @@ public class info_user {
     private String gender;
 
     @OneToOne
-    @Column(name = "user_id")
+    @JoinColumn(name = "user_id")
     private app_user user;
 
     @OneToOne
-    @Column(name = "direction")
+    @JoinColumn(name = "direction")
     private direction_user direction;
 
     public info_user(int id_info_user, String dni, String number_phone, String gender, app_user user,

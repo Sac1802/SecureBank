@@ -3,7 +3,7 @@ package com.securebank.securenank.Service;
 import com.securebank.securenank.DTO.accountDTO;
 import com.securebank.securenank.ExceptionHandler.ResourceNotFoundException;
 import com.securebank.securenank.Mapper.MapperAccount;
-import com.securebank.securenank.Model.account;
+import com.securebank.securenank.Model.Account;
 import com.securebank.securenank.Model.app_user;
 import com.securebank.securenank.Model.card_number;
 import com.securebank.securenank.Repository.RepositoryAccount;
@@ -12,8 +12,6 @@ import com.securebank.securenank.Repository.RepositoryCardNumber;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -37,11 +35,11 @@ public class ServiceAccount {
     }
 
     @Transactional
-    public account saveAccountService(accountDTO  accountDTO){
+    public Account saveAccountService(accountDTO  accountDTO){
         if (accountDTO == null) {
             throw new IllegalArgumentException("AccountDTO cannot be null");
         }
-        account accountMapper = mapperAccount.convertToAccount(accountDTO);
+        Account accountMapper = mapperAccount.convertToAccount(accountDTO);
         return repositoryAccount.save(accountMapper);
     }
 
@@ -57,9 +55,9 @@ public class ServiceAccount {
     }
 
     public accountDTO updateAccount(accountDTO accountDTO, int id){
-        account accountExists = repositoryAccount.findById(id).
+        Account accountExists = repositoryAccount.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException("Account not found with ID: " + id));
-        account mapperAccountDTO = mapperAccount.convertToAccount(accountDTO);
+        Account mapperAccountDTO = mapperAccount.convertToAccount(accountDTO);
         accountExists.setId_user(mapperAccountDTO.getId_user());
         accountExists.setId_card(mapperAccountDTO.getId_card());
         accountExists.setMount_account_total(mapperAccountDTO.getMount_account_total());
@@ -70,7 +68,7 @@ public class ServiceAccount {
     }
 
     public String deleteAccount(int id){
-        Optional<account> findAccount = repositoryAccount.findById(id);
+        Optional<Account> findAccount = repositoryAccount.findById(id);
         if(findAccount.isEmpty()) {
             throw new ResourceNotFoundException("Account not found with ID: " + id);
         }
@@ -80,7 +78,7 @@ public class ServiceAccount {
 
     @Transactional
     public accountDTO patchUpdate(int id, Map<String, Object> update){
-        account accountUpdate = repositoryAccount.findById(id).orElseThrow(() ->
+        Account accountUpdate = repositoryAccount.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Account not found with ID: " + id));
         update.forEach((key, value) -> {
             if(value == null) throw new IllegalArgumentException("Value for " + key + " cannot be null");
@@ -109,7 +107,7 @@ public class ServiceAccount {
                     break;
             }
         });
-        account accountUpdated = repositoryAccount.save(accountUpdate);
+        Account accountUpdated = repositoryAccount.save(accountUpdate);
         return mapperAccount.convertToDTO(accountUpdated);
     }
 }
