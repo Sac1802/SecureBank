@@ -4,8 +4,6 @@ import jakarta.validation.constraints.*;
 
 public class app_userDTO {
 
-    @NotNull
-    @Min(value = 1, message  = "The ID must be greater than 0")
     private int id_user;
 
     @Size(min =  2, message = "The username must contain at least 2 characters.")
