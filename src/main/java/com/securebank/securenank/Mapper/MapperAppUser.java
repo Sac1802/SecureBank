@@ -12,7 +12,11 @@ import java.util.Optional;
 @Component
 public class MapperAppUser {
 
-    private static RepositoryRole repositoryRole;
+    private final RepositoryRole repositoryRole;
+
+    public MapperAppUser(RepositoryRole repositoryRole){
+        this.repositoryRole = repositoryRole;
+    }
 
     public app_userDTO convertToDTO(app_user user){
         app_userDTO userDTO = new app_userDTO();

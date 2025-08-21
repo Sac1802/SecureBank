@@ -18,8 +18,8 @@ public class Security {
                 csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> {
                     request.
-                            requestMatchers(HttpMethod.POST, "/account").permitAll()
-                            .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                            requestMatchers(HttpMethod.POST, "/user").permitAll()
+                            .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                             .anyRequest()
                             .authenticated();
                 });

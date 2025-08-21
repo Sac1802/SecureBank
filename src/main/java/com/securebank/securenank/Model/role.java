@@ -7,6 +7,7 @@ public class role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id_role;
 
     @Column(name = "user_role")
