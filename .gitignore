@@ -32,4 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 
-/src/main/java/com/securebank/securenank/**/RSAKeys/
+RSAKeys/
+
+src/main/resources/email.properties
+src/main/resources/application.properties
+src/main/resources/jwt.properties
