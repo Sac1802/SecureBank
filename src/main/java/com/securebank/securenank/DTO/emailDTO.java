@@ -16,6 +16,10 @@ public class emailDTO {
     @Min(1)
     private String verificationCode;
 
+    public emailDTO(){
+
+    }
+
     public emailDTO(String addresses, String affair, String body, String verificationCode) {
         this.addresses = addresses;
         this.affair = affair;
