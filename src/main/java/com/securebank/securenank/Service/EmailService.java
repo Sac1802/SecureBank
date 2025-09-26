@@ -26,6 +26,7 @@ public class EmailService implements EmailServiceInt{
         email.setBody("We're grateful you trust us to help you manage and process your money quickly, " +
                 "easily, and without waiting in lines. To continue with your account registration, please " +
                 "enter the following verification code.");
+        sendEmail(email);
     }
 
 
