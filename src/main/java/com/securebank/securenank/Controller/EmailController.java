@@ -32,6 +32,11 @@ public class EmailController {
         return JsonResponse.sendJsonGenericDto(user);
     }
 
-
-    // Code verification needs to be implemented
+    
+    @PostMapping("/verify")
+    public ResponseEntity<?> verifyEmail(@Valid appUserVerifyCodeDTO userVerifyCodeDTO, String code){
+        String hashCode = userVerifyCodeDTO.getCode();
+        boolean validation = generateCode.compareHashes(code, hashCode);
+        return JsonResponse.sendJsonGenericDto(validation);
+    }
 }
